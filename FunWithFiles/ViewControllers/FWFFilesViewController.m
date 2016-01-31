@@ -10,6 +10,8 @@
 #import "FWFFetchedResultsControllerDataSource.h"
 #import "FWFFile.h"
 
+#import "FWFImageViewController.h"
+
 @interface FWFFilesViewController () <FWFFetechedResultsControllerDataSourceDelegate>
 
 @property (strong, nonatomic) FWFFetchedResultsControllerDataSource *dataSource;
@@ -31,6 +33,11 @@
 
 }
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    [self performSegueWithIdentifier:@"ToPictureSegue" sender:self];
+}
+
 - (void)configureCell:(UITableViewCell *)cell withObject:(FWFFile*)object
 {
     cell.textLabel.text = object.file;
@@ -47,6 +54,13 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    FWFImageViewController *detailViewController = segue.destinationViewController;
+    detailViewController.file = self.dataSource.selectedItem;
+}
+
 
 /*
 #pragma mark - Navigation
