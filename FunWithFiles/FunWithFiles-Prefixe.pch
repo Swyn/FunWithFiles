@@ -1,0 +1,16 @@
+//
+//  FunWithFiles-Prefixe.pch
+//  FunWithFiles
+//
+//  Created by Alexandre ARRIGHI on 29/01/2016.
+//  Copyright © 2016 Alexandre ARRIGHI. All rights reserved.
+//
+
+#ifndef FunWithFiles_Prefixe_pch
+#define FunWithFiles_Prefixe_pch
+
+    #import <UIKit/UIKit.h>
+    #import <Foundation/Foundation.h>
+    #import <CoreData/CoreData.h>
+
+#endif /* FunWithFiles_Prefixe_pch */
