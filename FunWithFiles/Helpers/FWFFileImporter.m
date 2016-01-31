@@ -29,9 +29,9 @@
     return self;
 }
 
--(void)import{
+-(void)importAtPath:(NSString *)path{
 {
-    [self.webservice fetchAllFiles:^(NSArray *files)
+    [self.webservice fetchAllFilesAtPath:path withCallBack:^(NSArray *files)
      {
          for(NSString *fileStat in files) {
              [self.webservice fetchMetadaForFile:fileStat withCallback:^(NSDictionary *dict){

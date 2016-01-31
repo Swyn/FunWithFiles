@@ -7,8 +7,10 @@
         <attribute name="mimetype" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="modificationTime" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="path" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="parentFolder" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="File" inverseName="subFolder" inverseEntity="File" syncable="YES"/>
+        <relationship name="subFolder" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="File" inverseName="parentFolder" inverseEntity="File" syncable="YES"/>
     </entity>
     <elements>
-        <element name="File" positionX="-63" positionY="-18" width="128" height="135"/>
+        <element name="File" positionX="-63" positionY="-18" width="128" height="165"/>
     </elements>
 </model>

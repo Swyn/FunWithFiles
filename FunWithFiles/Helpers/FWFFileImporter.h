@@ -12,6 +12,6 @@
 @interface FWFFileImporter : NSObject
 
 -(id)initWithContext:(NSManagedObjectContext *)context webservice:(FWFFilesWebService *)webservice;
--(void)import;
+-(void)importAtPath:(NSString *)path;
 
 @end

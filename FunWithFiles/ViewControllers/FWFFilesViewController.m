@@ -13,6 +13,8 @@
 #import "FWFImageViewController.h"
 #import "FWFVideoViewController.h"
 
+#import "FWFFileImporter.h"
+
 @interface FWFFilesViewController () <FWFFetechedResultsControllerDataSourceDelegate>
 
 @property (strong, nonatomic) FWFFetchedResultsControllerDataSource *dataSource;
@@ -42,7 +44,18 @@
         FWFVideoViewController *vc = (FWFVideoViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"FWFVideoViewController"];
         vc.file = selectedFile;
         [self.navigationController pushViewController:vc animated:YES];
-    }else{
+    }else if ([selectedFile.mimetype isEqualToString:@"inode/directory"]){
+        
+        FWFFilesViewController *vc = (FWFFilesViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"FWFFilesViewController"];
+//        FWFFileImporter *importer = [[FWFFileImporter alloc] init];
+//        NSManagedObjectContext *context = nil;
+//        NSUInteger type = NSPrivateQueueConcurrencyType;
+//        context = [[NSManagedObjectContext alloc] initWithConcurrencyType:type];
+//        [context setParentContext:[self managedObjectContext]];
+//        vc.managedObjectContext = context;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    else{
     FWFImageViewController *VC = (FWFImageViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"FWFImageViewController"];
     VC.file = selectedFile;
     [self.navigationController pushViewController:VC animated:YES];

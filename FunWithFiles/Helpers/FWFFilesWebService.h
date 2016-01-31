@@ -11,7 +11,7 @@
 
 @interface FWFFilesWebService : NSObject
 
--(void)fetchAllFiles:(void (^)(NSArray *files))callback;
+-(void)fetchAllFilesAtPath:(NSString *)path withCallBack:(void (^)(NSArray *files))callback;
 -(void)fetchMetadaForFile:(NSString *)fileName withCallback:(void(^)(NSDictionary *dictionary))callback;
 
 @end

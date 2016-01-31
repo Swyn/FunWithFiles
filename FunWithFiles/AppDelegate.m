@@ -30,7 +30,7 @@
     
     self.webservice = [[FWFFilesWebService alloc] init];
     self.importer = [[FWFFileImporter alloc] initWithContext:self.persistentStack.backgroundManagedObjectContext webservice:self.webservice];
-    [self.importer import];
+    [self.importer importAtPath:nil];
     // Override point for customization after application launch.
     UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
     FWFFilesViewController *listViewController = (FWFFilesViewController *) navigationController.topViewController;

@@ -17,9 +17,16 @@
 @implementation FWFFilesWebService
 
 
--(void)fetchAllFiles:(void (^)(NSArray *files))callback{
+-(void)fetchAllFilesAtPath:(NSString *)path withCallBack:(void (^)(NSArray *files))callback{
+    NSString *urlString;
     
-    NSString *urlString = [NSString stringWithFormat:@"http://ioschallenge.api.meetlima.com/"];
+    if (path == nil) {
+        urlString = [NSString stringWithFormat:@"http://ioschallenge.api.meetlima.com/"];
+    }else{
+        urlString = [NSString stringWithFormat:@"http://ioschallenge.api.meetlima.com/%@", path];
+        urlString = [urlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
+    }
+    
     NSURL *url = [NSURL URLWithString:urlString];
     [[[NSURLSession sharedSession] dataTaskWithURL:url completionHandler:
       ^(NSData *data, NSURLResponse *response, NSError *error) {
