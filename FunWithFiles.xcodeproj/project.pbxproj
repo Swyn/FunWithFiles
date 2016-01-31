@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		AB4CE24F1C5E707E009F83CF /* FWFImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB4CE24E1C5E707E009F83CF /* FWFImageViewController.m */; };
+		AB4CE2521C5EA64D009F83CF /* FWFVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB4CE2511C5EA64D009F83CF /* FWFVideoViewController.m */; };
 		ABF107721C5C15EA00DF5E72 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = ABF107711C5C15EA00DF5E72 /* main.m */; };
 		ABF107751C5C15EA00DF5E72 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = ABF107741C5C15EA00DF5E72 /* AppDelegate.m */; };
 		ABF107781C5C15EA00DF5E72 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ABF107771C5C15EA00DF5E72 /* ViewController.m */; };
@@ -50,6 +51,8 @@
 		594430805FAFED01AAFCF9FD /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		AB4CE24D1C5E707E009F83CF /* FWFImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FWFImageViewController.h; path = ViewControllers/FWFImageViewController.h; sourceTree = "<group>"; };
 		AB4CE24E1C5E707E009F83CF /* FWFImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FWFImageViewController.m; path = ViewControllers/FWFImageViewController.m; sourceTree = "<group>"; };
+		AB4CE2501C5EA64D009F83CF /* FWFVideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FWFVideoViewController.h; path = ViewControllers/FWFVideoViewController.h; sourceTree = "<group>"; };
+		AB4CE2511C5EA64D009F83CF /* FWFVideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FWFVideoViewController.m; path = ViewControllers/FWFVideoViewController.m; sourceTree = "<group>"; };
 		ABF1076D1C5C15EA00DF5E72 /* FunWithFiles.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FunWithFiles.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABF107711C5C15EA00DF5E72 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		ABF107731C5C15EA00DF5E72 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -219,6 +222,8 @@
 				ABF107BD1C5D0EA100DF5E72 /* FWFFilesViewController.m */,
 				AB4CE24D1C5E707E009F83CF /* FWFImageViewController.h */,
 				AB4CE24E1C5E707E009F83CF /* FWFImageViewController.m */,
+				AB4CE2501C5EA64D009F83CF /* FWFVideoViewController.h */,
+				AB4CE2511C5EA64D009F83CF /* FWFVideoViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -430,6 +435,7 @@
 				ABF107781C5C15EA00DF5E72 /* ViewController.m in Sources */,
 				ABF1077E1C5C15EA00DF5E72 /* FunWithFiles.xcdatamodeld in Sources */,
 				ABF107751C5C15EA00DF5E72 /* AppDelegate.m in Sources */,
+				AB4CE2521C5EA64D009F83CF /* FWFVideoViewController.m in Sources */,
 				AB4CE24F1C5E707E009F83CF /* FWFImageViewController.m in Sources */,
 				ABF107721C5C15EA00DF5E72 /* main.m in Sources */,
 				ABF107BA1C5C29D800DF5E72 /* FWFModelObject.m in Sources */,

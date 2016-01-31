@@ -1,38 +1,41 @@
 //
-//  FWFImageViewController.m
+//  FWFVideoViewController.m
 //  FunWithFiles
 //
 //  Created by Alexandre ARRIGHI on 31/01/2016.
 //  Copyright © 2016 Alexandre ARRIGHI. All rights reserved.
 //
 
-#import "FWFImageViewController.h"
-#import <SDWebImage/UIImageView+WebCache.h>
+#import "FWFVideoViewController.h"
+#import <VKVideoPlayer/VKVideoPlayer.h>
 
-@interface FWFImageViewController ()
-@property (weak, nonatomic) IBOutlet UIImageView *imageView;
+@interface FWFVideoViewController ()<VKVideoPlayerDelegate>
+
+@property (nonatomic, strong) VKVideoPlayer* player;
 
 @end
 
-@implementation FWFImageViewController
+@implementation FWFVideoViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self getAndDisplayImage];
+    [self getAndPlayVideo];
     // Do any additional setup after loading the view.
 }
 
--(void)getAndDisplayImage{
-    
+-(void)getAndPlayVideo{
     
     NSString *urlString = [NSString stringWithFormat:@"http://ioschallenge.api.meetlima.com/%@", self.file.file];
     urlString = [urlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
     NSURL *url = [NSURL URLWithString:urlString];
     
-    [self.imageView sd_setImageWithURL:url completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-        
-    }];
-    
+    VKVideoPlayerTrack *track = [[VKVideoPlayerTrack alloc] init];
+    track.streamURL = url;
+    self.player = [[VKVideoPlayer alloc] initWithVideoPlayerView:[[VKVideoPlayerView alloc] init]];
+    self.player.view.frame = self.view.bounds;
+    self.player.delegate = self;
+    [self.view addSubview:self.player.view];
+    [self.player loadVideoWithStreamURL:url];
     
 }
 

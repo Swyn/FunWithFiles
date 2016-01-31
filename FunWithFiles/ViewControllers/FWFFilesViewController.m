@@ -11,6 +11,7 @@
 #import "FWFFile.h"
 
 #import "FWFImageViewController.h"
+#import "FWFVideoViewController.h"
 
 @interface FWFFilesViewController () <FWFFetechedResultsControllerDataSourceDelegate>
 
@@ -35,7 +36,17 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    [self performSegueWithIdentifier:@"ToPictureSegue" sender:self];
+    FWFFile *selectedFile = self.dataSource.selectedItem;
+    
+    if ([selectedFile.mimetype isEqualToString:@"video/mp4"]) {
+        FWFVideoViewController *vc = (FWFVideoViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"FWFVideoViewController"];
+        vc.file = selectedFile;
+        [self.navigationController pushViewController:vc animated:YES];
+    }else{
+    FWFImageViewController *VC = (FWFImageViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"FWFImageViewController"];
+    VC.file = selectedFile;
+    [self.navigationController pushViewController:VC animated:YES];
+    }
 }
 
 - (void)configureCell:(UITableViewCell *)cell withObject:(FWFFile*)object
