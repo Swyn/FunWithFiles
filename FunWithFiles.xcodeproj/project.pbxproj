@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		AB4CE24F1C5E707E009F83CF /* FWFImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB4CE24E1C5E707E009F83CF /* FWFImageViewController.m */; };
 		AB4CE2521C5EA64D009F83CF /* FWFVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB4CE2511C5EA64D009F83CF /* FWFVideoViewController.m */; };
+		AB4CE25A1C5F93AF009F83CF /* FWFFile+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = AB4CE2571C5F93AF009F83CF /* FWFFile+CoreDataProperties.m */; };
+		AB4CE25B1C5F93AF009F83CF /* FWFFile.m in Sources */ = {isa = PBXBuildFile; fileRef = AB4CE2591C5F93AF009F83CF /* FWFFile.m */; };
 		ABF107721C5C15EA00DF5E72 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = ABF107711C5C15EA00DF5E72 /* main.m */; };
 		ABF107751C5C15EA00DF5E72 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = ABF107741C5C15EA00DF5E72 /* AppDelegate.m */; };
 		ABF107781C5C15EA00DF5E72 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ABF107771C5C15EA00DF5E72 /* ViewController.m */; };
@@ -20,7 +22,6 @@
 		ABF107991C5C15EA00DF5E72 /* FunWithFilesUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = ABF107981C5C15EA00DF5E72 /* FunWithFilesUITests.m */; };
 		ABF107A91C5C1A8400DF5E72 /* FWFFilesWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = ABF107A81C5C1A8400DF5E72 /* FWFFilesWebService.m */; };
 		ABF107AC1C5C1B9800DF5E72 /* FWFFileImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = ABF107AB1C5C1B9800DF5E72 /* FWFFileImporter.m */; };
-		ABF107B71C5C296E00DF5E72 /* FWFFile.m in Sources */ = {isa = PBXBuildFile; fileRef = ABF107B61C5C296E00DF5E72 /* FWFFile.m */; };
 		ABF107BA1C5C29D800DF5E72 /* FWFModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = ABF107B91C5C29D800DF5E72 /* FWFModelObject.m */; };
 		ABF107BE1C5D0EA100DF5E72 /* FWFFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ABF107BD1C5D0EA100DF5E72 /* FWFFilesViewController.m */; };
 		ABF107C31C5D0F1A00DF5E72 /* FWFFetchedResultsControllerDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = ABF107C21C5D0F1A00DF5E72 /* FWFFetchedResultsControllerDataSource.m */; };
@@ -53,6 +54,10 @@
 		AB4CE24E1C5E707E009F83CF /* FWFImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FWFImageViewController.m; path = ViewControllers/FWFImageViewController.m; sourceTree = "<group>"; };
 		AB4CE2501C5EA64D009F83CF /* FWFVideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FWFVideoViewController.h; path = ViewControllers/FWFVideoViewController.h; sourceTree = "<group>"; };
 		AB4CE2511C5EA64D009F83CF /* FWFVideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FWFVideoViewController.m; path = ViewControllers/FWFVideoViewController.m; sourceTree = "<group>"; };
+		AB4CE2561C5F93AF009F83CF /* FWFFile+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "FWFFile+CoreDataProperties.h"; path = "Models/FWFFile+CoreDataProperties.h"; sourceTree = "<group>"; };
+		AB4CE2571C5F93AF009F83CF /* FWFFile+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "FWFFile+CoreDataProperties.m"; path = "Models/FWFFile+CoreDataProperties.m"; sourceTree = "<group>"; };
+		AB4CE2581C5F93AF009F83CF /* FWFFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FWFFile.h; path = Models/FWFFile.h; sourceTree = "<group>"; };
+		AB4CE2591C5F93AF009F83CF /* FWFFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FWFFile.m; path = Models/FWFFile.m; sourceTree = "<group>"; };
 		ABF1076D1C5C15EA00DF5E72 /* FunWithFiles.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FunWithFiles.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABF107711C5C15EA00DF5E72 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		ABF107731C5C15EA00DF5E72 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -75,8 +80,6 @@
 		ABF107AA1C5C1B9800DF5E72 /* FWFFileImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FWFFileImporter.h; path = Helpers/FWFFileImporter.h; sourceTree = "<group>"; };
 		ABF107AB1C5C1B9800DF5E72 /* FWFFileImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FWFFileImporter.m; path = Helpers/FWFFileImporter.m; sourceTree = "<group>"; };
 		ABF107AD1C5C1CB800DF5E72 /* FunWithFiles-Prefixe.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FunWithFiles-Prefixe.pch"; sourceTree = "<group>"; };
-		ABF107B51C5C296E00DF5E72 /* FWFFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FWFFile.h; path = Models/FWFFile.h; sourceTree = "<group>"; };
-		ABF107B61C5C296E00DF5E72 /* FWFFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FWFFile.m; path = Models/FWFFile.m; sourceTree = "<group>"; };
 		ABF107B81C5C29D800DF5E72 /* FWFModelObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FWFModelObject.h; path = Helpers/FWFModelObject.h; sourceTree = "<group>"; };
 		ABF107B91C5C29D800DF5E72 /* FWFModelObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FWFModelObject.m; path = Helpers/FWFModelObject.m; sourceTree = "<group>"; };
 		ABF107BC1C5D0EA100DF5E72 /* FWFFilesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FWFFilesViewController.h; path = ViewControllers/FWFFilesViewController.h; sourceTree = "<group>"; };
@@ -208,8 +211,10 @@
 		ABF107AE1C5C28A400DF5E72 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				ABF107B51C5C296E00DF5E72 /* FWFFile.h */,
-				ABF107B61C5C296E00DF5E72 /* FWFFile.m */,
+				AB4CE2561C5F93AF009F83CF /* FWFFile+CoreDataProperties.h */,
+				AB4CE2571C5F93AF009F83CF /* FWFFile+CoreDataProperties.m */,
+				AB4CE2581C5F93AF009F83CF /* FWFFile.h */,
+				AB4CE2591C5F93AF009F83CF /* FWFFile.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -429,17 +434,18 @@
 			files = (
 				ABF107A91C5C1A8400DF5E72 /* FWFFilesWebService.m in Sources */,
 				ABF107BE1C5D0EA100DF5E72 /* FWFFilesViewController.m in Sources */,
+				AB4CE25A1C5F93AF009F83CF /* FWFFile+CoreDataProperties.m in Sources */,
 				ABF107C61C5D168200DF5E72 /* FWFPersistentStack.m in Sources */,
 				ABF107AC1C5C1B9800DF5E72 /* FWFFileImporter.m in Sources */,
 				ABF107C31C5D0F1A00DF5E72 /* FWFFetchedResultsControllerDataSource.m in Sources */,
 				ABF107781C5C15EA00DF5E72 /* ViewController.m in Sources */,
 				ABF1077E1C5C15EA00DF5E72 /* FunWithFiles.xcdatamodeld in Sources */,
 				ABF107751C5C15EA00DF5E72 /* AppDelegate.m in Sources */,
+				AB4CE25B1C5F93AF009F83CF /* FWFFile.m in Sources */,
 				AB4CE2521C5EA64D009F83CF /* FWFVideoViewController.m in Sources */,
 				AB4CE24F1C5E707E009F83CF /* FWFImageViewController.m in Sources */,
 				ABF107721C5C15EA00DF5E72 /* main.m in Sources */,
 				ABF107BA1C5C29D800DF5E72 /* FWFModelObject.m in Sources */,
-				ABF107B71C5C296E00DF5E72 /* FWFFile.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

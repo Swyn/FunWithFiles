@@ -30,8 +30,9 @@
     return self;
 }
 
--(void)importAtPath:(NSString *)path{
+-(void)importAtPath:(NSString *)path withFile:(FWFFile *)file{
 {
+    __weak FWFFile *weakFile = file;
     [self.webservice fetchAllFilesAtPath:path withCallBack:^(NSArray *files)
      {
          for(NSString *fileStat in files) {
@@ -41,7 +42,7 @@
                  [self.context performBlock:^
                   {
                       FWFFile *file = [FWFFile findOrCreateFileWithIdentifier:fileStat inContext:self.context];
-                      [file loadFromDictionary:dict];
+                      [file loadFromDictionary:dict withParentFile:weakFile];
                       NSError *error = nil;
                       [self.context save:&error];
                       if (error) {

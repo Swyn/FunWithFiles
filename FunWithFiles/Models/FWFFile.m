@@ -2,7 +2,7 @@
 //  FWFFile.m
 //  FunWithFiles
 //
-//  Created by Alexandre ARRIGHI on 30/01/2016.
+//  Created by Alexandre ARRIGHI on 01/02/2016.
 //  Copyright © 2016 Alexandre ARRIGHI. All rights reserved.
 //
 
@@ -10,29 +10,22 @@
 
 @implementation FWFFile
 
-@dynamic file;
-@dynamic mimetype;
-@dynamic changeTime;
-@dynamic accessTime;
-@dynamic modificationTime;
-@dynamic path;
-@dynamic size;
-
-- (void)loadFromDictionary:(NSDictionary *)dictionary
+- (void)loadFromDictionary:(NSDictionary *)dictionary withParentFile:(FWFFile *)file
 {
-    self.file = dictionary[@"file"];
+    self.fileName = dictionary[@"file"];
     self.mimetype = dictionary[@"mimetype"];
     self.changeTime = [NSString stringWithFormat:@"%@", dictionary[@"change_time"]] ;
     self.accessTime = [NSString stringWithFormat:@"%@", dictionary[@"access_time"]];
     self.modificationTime = [NSString stringWithFormat:@"%@", dictionary[@"modification_time"]];
     self.path = dictionary[@"path"];
-//    self.size = dictionary[@"size"];
+    self.parentFile = file;
+    //    self.size = dictionary[@"size"];
 }
 
 + (FWFFile *)findOrCreateFileWithIdentifier:(NSString *)name inContext:(NSManagedObjectContext *)context
 {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"File"];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"file == %@",name];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"fileName == %@",name];
     NSError *error = nil;
     NSArray *result = [context executeFetchRequest:fetchRequest error:&error];
     if (error) {
@@ -42,8 +35,8 @@
         return result.lastObject;
     } else {
         
-        FWFFile *file = [self insertNewObjectIntoContext:context];
-        file.file = name;
+        FWFFile *file = (FWFFile *)[FWFModelObject insertNewObjectIntoContext:context];
+        file.fileName = name;
         return file;
     }
 }

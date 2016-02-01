@@ -16,6 +16,6 @@
 @property (nonatomic, strong) FWFFile *parentFile;
 
 -(id)initWithContext:(NSManagedObjectContext *)context webservice:(FWFFilesWebService *)webservice;
--(void)importAtPath:(NSString *)path;
+-(void)importAtPath:(NSString *)path withFile:(FWFFile *)file;
 
 @end

@@ -29,34 +29,29 @@
     
     if (!self.isSubFolder) {
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"File"];
-        request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"file" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"mimetype" ascending:NO]];
+        request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"fileName" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"mimetype" ascending:NO]];
         
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"parentFile == nil"];
+        [request setPredicate:pred];
         self.dataSource = [[FWFFetchedResultsControllerDataSource alloc] initWithTableView:self.tableView];
         self.dataSource.delegate = self;
         self.dataSource.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
         self.dataSource.reuseIdentifier = @"Cell";
     }else {
-        FWFFilesWebService *webservice = [[FWFFilesWebService alloc] init];
-        NSManagedObjectContext *objectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-        objectContext.parentContext = self.managedObjectContext;
-        [objectContext performBlock:^{
-            FWFFileImporter *importer = [[FWFFileImporter alloc] initWithContext:objectContext webservice:webservice];
-            importer.currentPath = self.file.path;
-            [importer importAtPath:self.file.file];
-            NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"File"];
-            [NSFetchedResultsController deleteCacheWithName:@"File"];
-            NSPredicate *pred = [NSPredicate predicateWithFormat:@"parent.file == %@", self.file.file];
-            [request setPredicate:pred];
-            request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"file" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"mimetype" ascending:NO]];
-            self.dataSource = [[FWFFetchedResultsControllerDataSource alloc] initWithTableView:self.tableView];
-            self.dataSource.delegate = self;
-            self.dataSource.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:objectContext sectionNameKeyPath:nil cacheName:nil];
-            self.dataSource.reuseIdentifier = @"Cell";
-        }];
-        
+       FWFFilesWebService *webservice = [[FWFFilesWebService alloc] init];
+       FWFFileImporter *importer = [[FWFFileImporter alloc] initWithContext:[self managedObjectContext] webservice:webservice];
+       importer.currentPath = self.file.path;
+       [importer importAtPath:self.file.fileName withFile:self.file];
+       NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"File"];
+       [NSFetchedResultsController deleteCacheWithName:@"File"];
+       NSPredicate *pred = [NSPredicate predicateWithFormat:@"parentFile == %@", self.file];
+       [request setPredicate:pred];
+       request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"fileName" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"mimetype" ascending:NO]];
+       self.dataSource = [[FWFFetchedResultsControllerDataSource alloc] initWithTableView:self.tableView];
+       self.dataSource.delegate = self;
+       self.dataSource.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:[self managedObjectContext] sectionNameKeyPath:nil cacheName:nil];
+       self.dataSource.reuseIdentifier = @"Cell";
     }
-   
-
 }
 
 
@@ -74,12 +69,7 @@
         vc.isSubFolder = YES;
         vc.file = selectedFile;
         vc.managedObjectContext = [self managedObjectContext];
-        vc.file.parentFolder = selectedFile;
-//        NSManagedObjectContext *context = nil;
-//        NSUInteger type = NSPrivateQueueConcurrencyType;
-//        context = [[NSManagedObjectContext alloc] initWithConcurrencyType:type];
-//        [context setParentContext:[self managedObjectContext]];
-//        vc.managedObjectContext = context;
+        vc.file.parentFile = selectedFile;
         [self.navigationController pushViewController:vc animated:YES];
     }
     else{
@@ -91,7 +81,7 @@
 
 - (void)configureCell:(UITableViewCell *)cell withObject:(FWFFile*)object
 {
-    cell.textLabel.text = object.file;
+    cell.textLabel.text = object.fileName;
     cell.detailTextLabel.text = object.mimetype;
 }
 
@@ -112,20 +102,6 @@
     detailViewController.file = self.dataSource.selectedItem;
 }
 
-- (NSURL*)storeURL
-{
-    NSURL* documentsDirectory = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory
-                                                                       inDomain:NSUserDomainMask
-                                                              appropriateForURL:nil
-                                                                         create:YES
-                                                                          error:NULL];
-    return [documentsDirectory URLByAppendingPathComponent:@"db.sqlite"];
-}
-
-- (NSURL*)modelURL
-{
-    return [[NSBundle mainBundle] URLForResource:@"FunWithFiles" withExtension:@"momd"];
-}
 
 
 /*
