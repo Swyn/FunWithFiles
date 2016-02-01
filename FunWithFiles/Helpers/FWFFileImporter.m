@@ -15,7 +15,6 @@
 @property (nonatomic, strong) NSManagedObjectContext *context;
 @property (nonatomic, strong) FWFFilesWebService *webservice;
 
-
 @end
 
 @implementation FWFFileImporter
@@ -38,7 +37,6 @@
          for(NSString *fileStat in files) {
              [self.webservice fetchMetadaForFile:fileStat atPath:self.currentPath withCallback:^(NSDictionary *dict){
                  NSLog(@"%@", dict);
-                 
                  [self.context performBlock:^
                   {
                       FWFFile *file = [FWFFile findOrCreateFileWithIdentifier:fileStat inContext:self.context];
@@ -49,10 +47,8 @@
                           NSLog(@"Error: %@", error.localizedDescription);
                       }
                   }];
-                 
              }];
          }
-         
      }];
     }
 }

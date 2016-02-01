@@ -28,7 +28,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    NSLog(@"%lu", self.fetchedResultsController.sections.count);
+    
     return self.fetchedResultsController.sections.count;
 }
 

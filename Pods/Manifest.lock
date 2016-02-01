@@ -17,9 +17,9 @@ PODS:
   - DTFoundation/UIKit (1.7.9):
     - DTFoundation/Core
   - FXImageView (1.3.5)
-  - OrigamiEngine (1.0.14):
-    - OrigamiEngine/Core (= 1.0.14)
   - OrigamiEngine/Core (1.0.14)
+  - OrigamiEngine/Flac (1.0.14):
+    - OrigamiEngine/Core
   - Reachability (3.1.1)
   - SDWebImage (3.7.5):
     - SDWebImage/Core (= 3.7.5)
@@ -36,7 +36,7 @@ PODS:
     - VKFoundation (= 0.1.1)
 
 DEPENDENCIES:
-  - OrigamiEngine
+  - OrigamiEngine/Flac
   - SDWebImage
   - UIImageView-PlayGIF
   - VKVideoPlayer

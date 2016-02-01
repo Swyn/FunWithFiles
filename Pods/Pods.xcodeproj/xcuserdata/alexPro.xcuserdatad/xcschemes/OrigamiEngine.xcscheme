@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'B8D68F271A57DE163F7239C1'
+               BlueprintIdentifier = '57925B3420BC601FE6C84B86'
                BlueprintName = 'OrigamiEngine'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libOrigamiEngine.a'>

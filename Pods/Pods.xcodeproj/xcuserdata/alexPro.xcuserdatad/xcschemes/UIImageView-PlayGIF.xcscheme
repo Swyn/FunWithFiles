@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '6B92CC7D221284437923D1D7'
+               BlueprintIdentifier = '21DB0549F52B01071496625C'
                BlueprintName = 'UIImageView-PlayGIF'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libUIImageView-PlayGIF.a'>

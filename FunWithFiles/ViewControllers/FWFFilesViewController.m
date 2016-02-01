@@ -11,6 +11,7 @@
 
 #import "FWFImageViewController.h"
 #import "FWFVideoViewController.h"
+#import "FWFMusicViewController.h"
 #import "FWFFilesWebService.h"
 #import "FWFFileImporter.h"
 #import "FWFPersistentStack.h"
@@ -26,11 +27,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    
     if (!self.isSubFolder) {
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"File"];
         request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"fileName" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"mimetype" ascending:NO]];
-        
         NSPredicate *pred = [NSPredicate predicateWithFormat:@"parentFile == nil"];
         [request setPredicate:pred];
         self.dataSource = [[FWFFetchedResultsControllerDataSource alloc] initWithTableView:self.tableView];
@@ -64,13 +63,16 @@
         vc.file = selectedFile;
         [self.navigationController pushViewController:vc animated:YES];
     }else if ([selectedFile.mimetype isEqualToString:@"inode/directory"]){
-        
         FWFFilesViewController *vc = (FWFFilesViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"FWFFilesViewController"];
         vc.isSubFolder = YES;
         vc.file = selectedFile;
         vc.managedObjectContext = [self managedObjectContext];
-        vc.file.parentFile = selectedFile;
         [self.navigationController pushViewController:vc animated:YES];
+    }else if ([selectedFile.mimetype containsString:@"audio"]){
+        FWFMusicViewController *vc = (FWFMusicViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"FWFMusicViewController"];
+        vc.file = selectedFile;
+        [self.navigationController pushViewController:vc animated:YES];
+        
     }
     else{
     FWFImageViewController *VC = (FWFImageViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"FWFImageViewController"];
@@ -96,22 +98,10 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    FWFImageViewController *detailViewController = segue.destinationViewController;
-    detailViewController.file = self.dataSource.selectedItem;
-}
-
-
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+//- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+//{
+//    FWFImageViewController *detailViewController = segue.destinationViewController;
+//    detailViewController.file = self.dataSource.selectedItem;
+//}
 
 @end

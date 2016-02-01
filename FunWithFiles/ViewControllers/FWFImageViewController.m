@@ -25,7 +25,7 @@
 -(void)getAndDisplayImage{
     
     
-    NSString *urlString = [NSString stringWithFormat:@"http://ioschallenge.api.meetlima.com/%@", self.file.fileName];
+    NSString *urlString = [NSString stringWithFormat:@"http://ioschallenge.api.meetlima.com%@", self.file.path];
     urlString = [urlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
     NSURL *url = [NSURL URLWithString:urlString];
     

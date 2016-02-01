@@ -6,16 +6,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FunWithFiles/ViewControllers/TableViewHelper/FWFFetchedResultsControllerDataSource.m"
-            timestampString = "475985926.097391"
+            filePath = "FunWithFiles/ViewControllers/FWFFilesViewController.m"
+            timestampString = "476040792.013964"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "45"
-            endingLineNumber = "45"
-            landmarkName = "-tableView:cellForRowAtIndexPath:"
+            startingLineNumber = "78"
+            endingLineNumber = "78"
+            landmarkName = "-tableView:didSelectRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,13 +25,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FunWithFiles/ViewControllers/TableViewHelper/FWFFetchedResultsControllerDataSource.m"
-            timestampString = "475986047.573369"
+            filePath = "FunWithFiles/ViewControllers/FWFMusicViewController.m"
+            timestampString = "476045676.096899"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "21"
-            endingLineNumber = "21"
-            landmarkName = "-initWithTableView:"
+            startingLineNumber = "84"
+            endingLineNumber = "84"
+            landmarkName = "-engine:didChangeState:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -41,13 +41,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FunWithFiles/Helpers/FWFFileImporter.m"
-            timestampString = "476027247.161213"
+            filePath = "FunWithFiles/ViewControllers/FWFMusicViewController.m"
+            timestampString = "476045676.096899"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "47"
-            endingLineNumber = "47"
-            landmarkName = "-importAtPath:withFile:"
+            startingLineNumber = "98"
+            endingLineNumber = "98"
+            landmarkName = "-engine:didChangeState:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -57,13 +57,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FunWithFiles/Helpers/FWFFileImporter.m"
-            timestampString = "476027281.065127"
+            filePath = "FunWithFiles/ViewControllers/FWFMusicViewController.m"
+            timestampString = "476045064.019519"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "36"
-            endingLineNumber = "36"
-            landmarkName = "-importAtPath:withFile:"
+            startingLineNumber = "33"
+            endingLineNumber = "33"
+            landmarkName = "-viewDidLoad"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FunWithFiles/ViewControllers/FWFImageViewController.m"
+            timestampString = "476061039.080529"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "28"
+            endingLineNumber = "28"
+            landmarkName = "-getAndDisplayImage"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
