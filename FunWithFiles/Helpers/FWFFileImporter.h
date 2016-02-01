@@ -8,8 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import "FWFFilesWebService.h"
+#import "FWFFile.h"
 
 @interface FWFFileImporter : NSObject
+
+@property (nonatomic, strong) NSString *currentPath;
+@property (nonatomic, strong) FWFFile *parentFile;
 
 -(id)initWithContext:(NSManagedObjectContext *)context webservice:(FWFFilesWebService *)webservice;
 -(void)importAtPath:(NSString *)path;

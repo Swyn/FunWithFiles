@@ -10,7 +10,7 @@
 
 @interface FWFFetchedResultsControllerDataSource ()
 
-@property (strong, nonatomic) UITableView *tableView;
+@property (weak, nonatomic) UITableView *tableView;
 
 @end
 

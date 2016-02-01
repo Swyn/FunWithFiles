@@ -39,6 +39,10 @@
 @property (nonatomic, retain) NSString *path;
 @property (nonatomic, retain) NSString *size;
 
+@property (nonatomic, retain) FWFFile *parentFolder;
+@property (nonatomic, retain) FWFFile *subFolder;
+
+
 - (void)loadFromDictionary:(NSDictionary *)dictionary;
 + (FWFFile *)findOrCreateFileWithIdentifier:(NSString *)name inContext:(NSManagedObjectContext *)context;
 

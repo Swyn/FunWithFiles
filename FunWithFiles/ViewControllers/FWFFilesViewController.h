@@ -7,9 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FWFFile.h"
 
 @interface FWFFilesViewController : UITableViewController
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, strong) FWFFile *file;
+@property (nonatomic) BOOL isSubFolder;
 
 @end

@@ -45,9 +45,15 @@
 }
 
 
--(void)fetchMetadaForFile:(NSString *)fileName withCallback:(void(^)(NSDictionary *dictionary))callback{
+-(void)fetchMetadaForFile:(NSString *)fileName atPath:(NSString *)path withCallback:(void(^)(NSDictionary *dictionary))callback{
+    NSString *urlString;
     
-    NSString *urlString = [NSString stringWithFormat:@"http://ioschallenge.api.meetlima.com/%@?stat", fileName];
+    if (path == nil) {
+        urlString = [NSString stringWithFormat:@"http://ioschallenge.api.meetlima.com/%@?stat", fileName];
+    }else{
+        urlString = [NSString stringWithFormat:@"http://ioschallenge.api.meetlima.com%@/%@?stat", path, fileName];
+    }
+    
     urlString = [urlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
     NSURL *url = [NSURL URLWithString:urlString];
     [[[NSURLSession sharedSession] dataTaskWithURL:url completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {

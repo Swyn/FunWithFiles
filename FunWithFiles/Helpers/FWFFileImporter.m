@@ -8,12 +8,13 @@
 
 #import "FWFFileImporter.h"
 #import "FWFFilesWebService.h"
-#import "FWFFile.h"
+
 
 @interface FWFFileImporter ()
 
 @property (nonatomic, strong) NSManagedObjectContext *context;
 @property (nonatomic, strong) FWFFilesWebService *webservice;
+
 
 @end
 
@@ -34,7 +35,7 @@
     [self.webservice fetchAllFilesAtPath:path withCallBack:^(NSArray *files)
      {
          for(NSString *fileStat in files) {
-             [self.webservice fetchMetadaForFile:fileStat withCallback:^(NSDictionary *dict){
+             [self.webservice fetchMetadaForFile:fileStat atPath:self.currentPath withCallback:^(NSDictionary *dict){
                  NSLog(@"%@", dict);
                  
                  [self.context performBlock:^

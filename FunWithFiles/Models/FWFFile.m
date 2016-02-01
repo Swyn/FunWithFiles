@@ -41,6 +41,7 @@
     if (result.lastObject) {
         return result.lastObject;
     } else {
+        
         FWFFile *file = [self insertNewObjectIntoContext:context];
         file.file = name;
         return file;

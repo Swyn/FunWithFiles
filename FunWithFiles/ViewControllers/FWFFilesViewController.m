@@ -8,12 +8,12 @@
 
 #import "FWFFilesViewController.h"
 #import "FWFFetchedResultsControllerDataSource.h"
-#import "FWFFile.h"
 
 #import "FWFImageViewController.h"
 #import "FWFVideoViewController.h"
-
+#import "FWFFilesWebService.h"
 #import "FWFFileImporter.h"
+#import "FWFPersistentStack.h"
 
 @interface FWFFilesViewController () <FWFFetechedResultsControllerDataSourceDelegate>
 
@@ -26,15 +26,39 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"File"];
-    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"file" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"mimetype" ascending:NO]];
     
-    self.dataSource = [[FWFFetchedResultsControllerDataSource alloc] initWithTableView:self.tableView];
-    self.dataSource.delegate = self;
-    self.dataSource.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
-    self.dataSource.reuseIdentifier = @"Cell";
+    if (!self.isSubFolder) {
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"File"];
+        request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"file" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"mimetype" ascending:NO]];
+        
+        self.dataSource = [[FWFFetchedResultsControllerDataSource alloc] initWithTableView:self.tableView];
+        self.dataSource.delegate = self;
+        self.dataSource.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+        self.dataSource.reuseIdentifier = @"Cell";
+    }else {
+        FWFFilesWebService *webservice = [[FWFFilesWebService alloc] init];
+        NSManagedObjectContext *objectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+        objectContext.parentContext = self.managedObjectContext;
+        [objectContext performBlock:^{
+            FWFFileImporter *importer = [[FWFFileImporter alloc] initWithContext:objectContext webservice:webservice];
+            importer.currentPath = self.file.path;
+            [importer importAtPath:self.file.file];
+            NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"File"];
+            [NSFetchedResultsController deleteCacheWithName:@"File"];
+            NSPredicate *pred = [NSPredicate predicateWithFormat:@"parent.file == %@", self.file.file];
+            [request setPredicate:pred];
+            request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"file" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"mimetype" ascending:NO]];
+            self.dataSource = [[FWFFetchedResultsControllerDataSource alloc] initWithTableView:self.tableView];
+            self.dataSource.delegate = self;
+            self.dataSource.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:objectContext sectionNameKeyPath:nil cacheName:nil];
+            self.dataSource.reuseIdentifier = @"Cell";
+        }];
+        
+    }
+   
 
 }
+
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -47,7 +71,10 @@
     }else if ([selectedFile.mimetype isEqualToString:@"inode/directory"]){
         
         FWFFilesViewController *vc = (FWFFilesViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"FWFFilesViewController"];
-//        FWFFileImporter *importer = [[FWFFileImporter alloc] init];
+        vc.isSubFolder = YES;
+        vc.file = selectedFile;
+        vc.managedObjectContext = [self managedObjectContext];
+        vc.file.parentFolder = selectedFile;
 //        NSManagedObjectContext *context = nil;
 //        NSUInteger type = NSPrivateQueueConcurrencyType;
 //        context = [[NSManagedObjectContext alloc] initWithConcurrencyType:type];
@@ -83,6 +110,21 @@
 {
     FWFImageViewController *detailViewController = segue.destinationViewController;
     detailViewController.file = self.dataSource.selectedItem;
+}
+
+- (NSURL*)storeURL
+{
+    NSURL* documentsDirectory = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory
+                                                                       inDomain:NSUserDomainMask
+                                                              appropriateForURL:nil
+                                                                         create:YES
+                                                                          error:NULL];
+    return [documentsDirectory URLByAppendingPathComponent:@"db.sqlite"];
+}
+
+- (NSURL*)modelURL
+{
+    return [[NSBundle mainBundle] URLForResource:@"FunWithFiles" withExtension:@"momd"];
 }
 
 
