@@ -13,6 +13,9 @@
 #import "FWFVideoViewController.h"
 #import "FWFMusicViewController.h"
 #import "FWFFilesWebService.h"
+
+#import "FWFFilesTableViewCell.h"
+
 #import "FWFFileImporter.h"
 #import "FWFPersistentStack.h"
 
@@ -316,10 +319,20 @@
     }
 }
 
-- (void)configureCell:(UITableViewCell *)cell withObject:(FWFFile*)object
+- (void)configureCell:(FWFFilesTableViewCell *)cell withObject:(FWFFile*)object
 {
-    cell.textLabel.text = object.fileName;
-    cell.detailTextLabel.text = object.mimetype;
+    cell.fileName.text = object.fileName;
+    if ([object.mimetype containsString:@"audio"]) {
+        cell.image.image = [UIImage imageNamed:@"Music"];
+    }else if ([object.mimetype containsString:@"directory"]){
+        cell.image.image = [UIImage imageNamed:@"Folder"];
+    }else if ([object.mimetype containsString:@"video"]){
+        cell.image.image = [UIImage imageNamed:@"Video"];
+    }else if ([object.mimetype containsString:@"image"]){
+        cell.image.image = [UIImage imageNamed:@"Picture"];
+    }else
+        cell.image.image = [UIImage imageNamed:@"Unknown"];
+    
 }
 
 

@@ -7,6 +7,7 @@
 //
 
 #import "FWFFetchedResultsControllerDataSource.h"
+#import "FWFFilesTableViewCell.h"
 
 @interface FWFFetchedResultsControllerDataSource ()
 

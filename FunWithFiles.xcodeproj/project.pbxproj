@@ -12,6 +12,7 @@
 		AB4CE25A1C5F93AF009F83CF /* FWFFile+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = AB4CE2571C5F93AF009F83CF /* FWFFile+CoreDataProperties.m */; };
 		AB4CE25B1C5F93AF009F83CF /* FWFFile.m in Sources */ = {isa = PBXBuildFile; fileRef = AB4CE2591C5F93AF009F83CF /* FWFFile.m */; };
 		AB4CE25E1C5FC7FD009F83CF /* FWFMusicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB4CE25D1C5FC7FD009F83CF /* FWFMusicViewController.m */; };
+		AB4CE2641C605D30009F83CF /* FWFFilesTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AB4CE2631C605D30009F83CF /* FWFFilesTableViewCell.m */; };
 		ABF107721C5C15EA00DF5E72 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = ABF107711C5C15EA00DF5E72 /* main.m */; };
 		ABF107751C5C15EA00DF5E72 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = ABF107741C5C15EA00DF5E72 /* AppDelegate.m */; };
 		ABF107781C5C15EA00DF5E72 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ABF107771C5C15EA00DF5E72 /* ViewController.m */; };
@@ -61,6 +62,8 @@
 		AB4CE2591C5F93AF009F83CF /* FWFFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FWFFile.m; path = Models/FWFFile.m; sourceTree = "<group>"; };
 		AB4CE25C1C5FC7FD009F83CF /* FWFMusicViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FWFMusicViewController.h; path = ViewControllers/FWFMusicViewController.h; sourceTree = "<group>"; };
 		AB4CE25D1C5FC7FD009F83CF /* FWFMusicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FWFMusicViewController.m; path = ViewControllers/FWFMusicViewController.m; sourceTree = "<group>"; };
+		AB4CE2621C605D30009F83CF /* FWFFilesTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FWFFilesTableViewCell.h; path = CustomCells/FWFFilesTableViewCell.h; sourceTree = "<group>"; };
+		AB4CE2631C605D30009F83CF /* FWFFilesTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FWFFilesTableViewCell.m; path = CustomCells/FWFFilesTableViewCell.m; sourceTree = "<group>"; };
 		ABF1076D1C5C15EA00DF5E72 /* FunWithFiles.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FunWithFiles.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABF107711C5C15EA00DF5E72 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		ABF107731C5C15EA00DF5E72 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -125,6 +128,15 @@
 				1E310F1F287BCF3E5D1A3134 /* libPods.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		AB4CE2611C605C7A009F83CF /* CustomCells */ = {
+			isa = PBXGroup;
+			children = (
+				AB4CE2621C605D30009F83CF /* FWFFilesTableViewCell.h */,
+				AB4CE2631C605D30009F83CF /* FWFFilesTableViewCell.m */,
+			);
+			name = CustomCells;
 			sourceTree = "<group>";
 		};
 		ABF107641C5C15EA00DF5E72 = {
@@ -225,11 +237,12 @@
 		ABF107BB1C5D0E5600DF5E72 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				AB4CE2611C605C7A009F83CF /* CustomCells */,
 				ABF107C01C5D0EC500DF5E72 /* TableViewHelper */,
 				ABF107BC1C5D0EA100DF5E72 /* FWFFilesViewController.h */,
 				ABF107BD1C5D0EA100DF5E72 /* FWFFilesViewController.m */,
-				AB4CE24D1C5E707E009F83CF /* FWFImageViewController.h */,
 				AB4CE24E1C5E707E009F83CF /* FWFImageViewController.m */,
+				AB4CE24D1C5E707E009F83CF /* FWFImageViewController.h */,
 				AB4CE2501C5EA64D009F83CF /* FWFVideoViewController.h */,
 				AB4CE2511C5EA64D009F83CF /* FWFVideoViewController.m */,
 				AB4CE25C1C5FC7FD009F83CF /* FWFMusicViewController.h */,
@@ -448,6 +461,7 @@
 				ABF1077E1C5C15EA00DF5E72 /* FunWithFiles.xcdatamodeld in Sources */,
 				ABF107751C5C15EA00DF5E72 /* AppDelegate.m in Sources */,
 				AB4CE25B1C5F93AF009F83CF /* FWFFile.m in Sources */,
+				AB4CE2641C605D30009F83CF /* FWFFilesTableViewCell.m in Sources */,
 				AB4CE2521C5EA64D009F83CF /* FWFVideoViewController.m in Sources */,
 				AB4CE24F1C5E707E009F83CF /* FWFImageViewController.m in Sources */,
 				ABF107721C5C15EA00DF5E72 /* main.m in Sources */,
