@@ -19,7 +19,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.player = [[VKVideoPlayer alloc] initWithVideoPlayerView:[[VKVideoPlayerView alloc] init]];
+    self.player.view.frame = self.view.bounds;
+    self.player.delegate = self;
     [self getAndPlayVideo];
+    self.title = [NSString stringWithFormat:@"%@", self.file.fileName];
     // Do any additional setup after loading the view.
 }
 
@@ -28,14 +32,29 @@
     NSString *urlString = [NSString stringWithFormat:@"http://ioschallenge.api.meetlima.com/%@", self.file.fileName];
     urlString = [urlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
     NSURL *url = [NSURL URLWithString:urlString];
-    
     VKVideoPlayerTrack *track = [[VKVideoPlayerTrack alloc] init];
     track.streamURL = url;
-    self.player = [[VKVideoPlayer alloc] initWithVideoPlayerView:[[VKVideoPlayerView alloc] init]];
-    self.player.view.frame = self.view.bounds;
-    self.player.delegate = self;
     [self.view addSubview:self.player.view];
     [self.player loadVideoWithStreamURL:url];
+    
+}
+
+-(void)videoPlayer:(VKVideoPlayer *)videoPlayer didChangeStateFrom:(VKVideoPlayerState)fromState{
+    if (fromState != VKVideoPlayerStateContentPlaying) {
+        [self.navigationController setNavigationBarHidden:YES animated:YES];
+    }else
+        [self.navigationController setNavigationBarHidden:NO animated:YES];
+}
+
+-(void)videoPlayer:(VKVideoPlayer *)videoPlayer didControlByEvent:(VKVideoPlayerControlEvent)event{
+    
+    if (event == VKVideoPlayerControlEventTapDone) {
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    }else if (event == VKVideoPlayerControlEventTapPlayerView && self.player.state == VKVideoPlayerStateContentPaused){
+        [self.player playContent];
+    }else if (event == VKVideoPlayerControlEventTapPlayerView && self.player.state == VKVideoPlayerStateContentPlaying){
+         [self.player pauseContent];
+    }
     
 }
 

@@ -16,9 +16,16 @@
 #import "FWFFileImporter.h"
 #import "FWFPersistentStack.h"
 
-@interface FWFFilesViewController () <FWFFetechedResultsControllerDataSourceDelegate>
+#import <Foundation/Foundation.h>
+
+@interface FWFFilesViewController () <FWFFetechedResultsControllerDataSourceDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property (strong, nonatomic) FWFFetchedResultsControllerDataSource *dataSource;
+@property (strong, nonatomic) UIRefreshControl *refreshController;
+
+@property (weak, nonatomic) IBOutlet UILabel *topBarLabel;
+@property (strong, nonatomic) UIImage *imageToUpload;
+
 
 @end
 
@@ -26,33 +33,261 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self initRefreshController];
+    [self setupView];
+    if (self.isSubFolder) {
+        self.topBarLabel.text = [NSString stringWithFormat:@"%@", self.file.fileName];
+    }else{
+        self.topBarLabel.text = @"Home";
+    }
+   }
+
+-(void)setupView{
+    
+    FWFFilesWebService *webService = [[FWFFilesWebService alloc] init];
+    FWFFileImporter *importer = [[FWFFileImporter alloc] initWithContext:[self managedObjectContext] webservice:webService];
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"File"];
+    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"fileName" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"mimetype" ascending:NO]];
+    NSPredicate *pred;
     
     if (!self.isSubFolder) {
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"File"];
-        request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"fileName" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"mimetype" ascending:NO]];
-        NSPredicate *pred = [NSPredicate predicateWithFormat:@"parentFile == nil"];
-        [request setPredicate:pred];
-        self.dataSource = [[FWFFetchedResultsControllerDataSource alloc] initWithTableView:self.tableView];
-        self.dataSource.delegate = self;
-        self.dataSource.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
-        self.dataSource.reuseIdentifier = @"Cell";
+        [importer importAtPath:nil withFile:nil];
+        pred = [NSPredicate predicateWithFormat:@"parentFile == nil"];
     }else {
-       FWFFilesWebService *webservice = [[FWFFilesWebService alloc] init];
-       FWFFileImporter *importer = [[FWFFileImporter alloc] initWithContext:[self managedObjectContext] webservice:webservice];
-       importer.currentPath = self.file.path;
-       [importer importAtPath:self.file.fileName withFile:self.file];
-       NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"File"];
-       [NSFetchedResultsController deleteCacheWithName:@"File"];
-       NSPredicate *pred = [NSPredicate predicateWithFormat:@"parentFile == %@", self.file];
-       [request setPredicate:pred];
-       request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"fileName" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"mimetype" ascending:NO]];
-       self.dataSource = [[FWFFetchedResultsControllerDataSource alloc] initWithTableView:self.tableView];
-       self.dataSource.delegate = self;
-       self.dataSource.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:[self managedObjectContext] sectionNameKeyPath:nil cacheName:nil];
-       self.dataSource.reuseIdentifier = @"Cell";
+        importer.currentPath = self.file.path;
+        [importer importAtPath:self.file.fileName withFile:self.file];
+        pred = [NSPredicate predicateWithFormat:@"parentFile == %@", self.file];
     }
+    
+    [request setPredicate:pred];
+    
+    self.dataSource = [[FWFFetchedResultsControllerDataSource alloc] initWithTableView:self.tableView];
+    self.dataSource.delegate = self;
+    self.dataSource.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+    self.dataSource.reuseIdentifier = @"Cell";
+    
+    if (self.refreshController) {
+         [self.refreshController endRefreshing];
+    }
+
+    
 }
 
+-(void)initRefreshController{
+    
+    //Refresher initialisation
+    self.refreshController = [[UIRefreshControl alloc] init];
+    self.refreshController.backgroundColor = [UIColor purpleColor];
+    self.refreshController.tintColor = [UIColor whiteColor];
+    
+    [self.tableView addSubview:self.refreshController];
+    
+    [self.refreshController addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
+}
+
+-(void)refreshTable{
+    [self setupView];
+}
+
+- (IBAction)addBarButtonItemTouched:(UIBarButtonItem *)sender {
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Action" message:@"Choisissez une option" preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Ajouter un dossier" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+        [self addFolderAction];
+    }]];
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Ajouter une photo" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self showPhotoOptionAlert];
+    }]];
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Annuler" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        [self dismissViewControllerAnimated:YES completion:^{
+        }];
+    }]];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+    
+}
+
+-(void)showPhotoOptionAlert{
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Action" message:@"Choisissez une option" preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Depuis vos Albums" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+
+            UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+            picker.delegate = self;
+            picker.allowsEditing = YES;
+            picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+            [self presentViewController:picker animated:YES completion:NULL];
+
+    }]];
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Prendre une photo" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+            picker.delegate = self;
+            picker.allowsEditing = YES;
+            picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+            [self presentViewController:picker animated:YES completion:NULL];
+    }]];
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Annuler" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        [self dismissViewControllerAnimated:YES completion:^{
+        }];
+    }]];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+    
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    
+    self.imageToUpload = info[UIImagePickerControllerEditedImage];
+    [picker dismissViewControllerAnimated:YES completion:^{
+        [self addImage];
+    }];
+    
+}
+
+-(void)addImage{
+    
+    UIAlertController *alertController = [UIAlertController
+                                          alertControllerWithTitle:@"Ajouter une Image"
+                                          message:@"Entrez un nom pour l'image"
+                                          preferredStyle:UIAlertControllerStyleAlert];
+    
+    
+    [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField)
+     {
+         textField.placeholder = @"Nom de l'image";
+     }];
+    
+    UIAlertAction *okAction = [UIAlertAction
+                               actionWithTitle:@"Valider"
+                               style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction *action)
+                               {
+                                   [[self managedObjectContext] performBlockAndWait:^{
+                                       [self addImageWithName:alertController.textFields.firstObject.text];
+                                       NSError *error;
+                                       [[self managedObjectContext] save:&error];
+                                       if (!error) {
+                                           [self setupView];
+                                       }
+                                   }];
+                                   [self dismissViewControllerAnimated:YES completion:nil];
+                                   
+                               }];
+    UIAlertAction *cancelAction =[UIAlertAction actionWithTitle:@"Annuler"
+                                                          style:UIAlertActionStyleCancel
+                                                        handler:^(UIAlertAction * _Nonnull action) {
+                                                            [self dismissViewControllerAnimated:YES completion:nil];
+                                                        }];
+    
+    [alertController addAction:okAction];
+    [alertController addAction:cancelAction];
+    [self presentViewController:alertController animated:YES completion:nil];
+    
+
+    
+}
+
+-(void)addImageWithName:(NSString *)name{
+    
+    NSString *urlString;
+    
+    if (!self.isSubFolder) {
+        urlString = [NSString stringWithFormat:@"http://ioschallenge.api.meetlima.com/%@", name];
+    }else{
+        urlString = [NSString stringWithFormat:@"http://ioschallenge.api.meetlima.com%@/%@?stat", self.file.path, name];
+    }
+    
+    urlString = [urlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    request.HTTPMethod = @"PUT";
+    
+    NSData *imageData = UIImageJPEGRepresentation(self.imageToUpload, 1.0);
+    NSURLSessionUploadTask *task = [session uploadTaskWithRequest:request fromData:imageData completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+    }];
+    [task resume];
+    
+}
+
+
+-(void)addFolderAction{
+    
+    UIAlertController *alertController = [UIAlertController
+                                          alertControllerWithTitle:@"Ajouter un Dossier"
+                                          message:@"Entrez un nom pour le nouveau dossier"
+                                          preferredStyle:UIAlertControllerStyleAlert];
+    
+    
+    [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField)
+     {
+         textField.placeholder = @"Nom du dossier";
+     }];
+    
+    UIAlertAction *okAction = [UIAlertAction
+                               actionWithTitle:@"Valider"
+                               style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction *action)
+                               {
+                                   [[self managedObjectContext] performBlockAndWait:^{
+                                       [self addFolderWithName:alertController.textFields.firstObject.text];
+                                       NSError *error;
+                                       [[self managedObjectContext] save:&error];
+                                       if (!error) {
+                                           [self setupView];
+                                       }
+                                   }];
+                                   [self dismissViewControllerAnimated:YES completion:nil];
+                                   
+                               }];
+    UIAlertAction *cancelAction =[UIAlertAction actionWithTitle:@"Annuler"
+                                                        style:UIAlertActionStyleCancel
+                                                        handler:^(UIAlertAction * _Nonnull action) {
+                                                            [self dismissViewControllerAnimated:YES completion:nil];
+                                                        }];
+    
+    [alertController addAction:okAction];
+    [alertController addAction:cancelAction];
+    [self presentViewController:alertController animated:YES completion:nil];
+    
+    
+}
+
+
+-(void)addFolderWithName:(NSString *)name {
+    
+    NSString *urlString;
+    
+    if (!self.isSubFolder) {
+        urlString = [NSString stringWithFormat:@"http://ioschallenge.api.meetlima.com/%@", name];
+    }else{
+        urlString = [NSString stringWithFormat:@"http://ioschallenge.api.meetlima.com%@/%@?stat", self.file.path, name];
+    }
+    
+    urlString = [urlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    request.HTTPMethod = @"PUT";
+    
+    NSURLSessionDataTask *dataSession = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+    }];
+    
+    [dataSession resume];
+}
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -97,6 +332,13 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    
+    [picker dismissViewControllerAnimated:YES completion:NULL];
+    
+}
+
 
 //- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 //{

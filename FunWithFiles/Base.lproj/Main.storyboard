@@ -96,8 +96,15 @@
                                 </mask>
                             </variation>
                         </view>
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="YJe-TS-tTH"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="YJe-TS-tTH">
+                            <connections>
+                                <action selector="addBarButtonItemTouched:" destination="Cdf-yA-SKZ" id="gG6-bs-n8F"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="topBarLabel" destination="Mcg-QY-cSJ" id="sWp-iS-5tb"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wby-G0-1kK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -303,10 +310,10 @@
             </objects>
             <point key="canvasLocation" x="2650.5" y="-1151.25"/>
         </scene>
-        <!--FWFImageViewController-->
+        <!--Image View Controller-->
         <scene sceneID="e44-97-M8Y">
             <objects>
-                <viewController restorationIdentifier="FWFImageViewController" storyboardIdentifier="FWFImageViewController" title="FWFImageViewController" id="tk2-br-JGp" customClass="FWFImageViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="FWFImageViewController" id="tk2-br-JGp" customClass="FWFImageViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="IAf-2H-ped"/>
                         <viewControllerLayoutGuide type="bottom" id="Bb6-ft-KwV"/>

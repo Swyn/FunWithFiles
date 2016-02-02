@@ -25,6 +25,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = [NSString stringWithFormat:@"%@", self.file.fileName];
     self.player = [[ORGMEngine alloc] init];
     self.player.delegate = self;
     

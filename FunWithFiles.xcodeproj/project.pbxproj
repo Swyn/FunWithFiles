@@ -593,6 +593,7 @@
 			baseConfigurationReference = 594430805FAFED01AAFCF9FD /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FunWithFiles/FunWithFiles-Prefixe.pch";
 				INFOPLIST_FILE = FunWithFiles/Info.plist;
@@ -607,6 +608,7 @@
 			baseConfigurationReference = 33650E5DFB1A85744FF36CE1 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FunWithFiles/FunWithFiles-Prefixe.pch";
 				INFOPLIST_FILE = FunWithFiles/Info.plist;

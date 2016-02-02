@@ -10,7 +10,7 @@
 
 @interface FWFFilesWebService ()
 
-@property (nonatomic, strong) NSURLSessionDataTask *task;
+//@property (nonatomic, strong) NSURLSessionDataTask *task;
 
 @end
 

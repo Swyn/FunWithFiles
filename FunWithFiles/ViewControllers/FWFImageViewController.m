@@ -17,9 +17,11 @@
 @implementation FWFImageViewController
 
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
     [self getAndDisplayImage];
-    // Do any additional setup after loading the view.
+    self.title = [NSString stringWithFormat:@"%@", self.file.fileName];
+
 }
 
 -(void)getAndDisplayImage{

@@ -28,9 +28,9 @@
     // Override point for customization after application launch.
     self.persistentStack = [[FWFPersistentStack alloc] initWithStoreURL:self.storeURL modelURL:self.modelURL];
     
-    self.webservice = [[FWFFilesWebService alloc] init];
-    self.importer = [[FWFFileImporter alloc] initWithContext:self.persistentStack.backgroundManagedObjectContext webservice:self.webservice];
-    [self.importer importAtPath:nil withFile:nil];
+//    self.webservice = [[FWFFilesWebService alloc] init];
+//    self.importer = [[FWFFileImporter alloc] initWithContext:self.persistentStack.backgroundManagedObjectContext webservice:self.webservice];
+//    [self.importer importAtPath:nil withFile:nil];
     // Override point for customization after application launch.
     UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
     FWFFilesViewController *listViewController = (FWFFilesViewController *) navigationController.topViewController;
