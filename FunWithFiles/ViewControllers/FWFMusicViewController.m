@@ -9,6 +9,7 @@
 #import "FWFMusicViewController.h"
 #import <OrigamiEngine/ORGMEngine.h>
 
+
 @interface FWFMusicViewController ()<ORGMEngineDelegate>
 
 @property (strong, nonatomic) ORGMEngine *player;
@@ -16,6 +17,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
 @property (weak, nonatomic) IBOutlet UILabel *playedLabel;
 @property (weak, nonatomic) IBOutlet UILabel *toPlayLabel;
+
+
+
 @property (strong, nonatomic) NSURL *url;
 @property (strong, nonatomic) NSTimer *refreshTimer;
 
@@ -26,14 +30,20 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = [NSString stringWithFormat:@"%@", self.file.fileName];
+
+    if (self.player != nil)
+        [self.player removeObserver:self forKeyPath:@"status"];
     self.player = [[ORGMEngine alloc] init];
     self.player.delegate = self;
+    [self.player addObserver:self forKeyPath:@"status" options:0 context:nil];
     
     NSString *urlString = [NSString stringWithFormat:@"http://ioschallenge.api.meetlima.com%@", self.file.path];
     urlString = [urlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
     self.url = [NSURL URLWithString:urlString];
-    // Do any additional setup after loading the view.
+    
 }
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -42,8 +52,8 @@
 
 -(void)viewDidDisappear:(BOOL)animated{
     [super viewDidDisappear:animated];
-    
 }
+
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
@@ -59,11 +69,12 @@
 
 - (void)refreshUI {
     if (self.player.currentState == ORGMEngineStatePlaying) {
-        self.playedLabel.text = [NSString stringWithFormat:@"%.1f",
-                              self.player.amountPlayed];
+        self.playedLabel.text = [NSString stringWithFormat:@"%@",
+                              [self printSecond:self.player.amountPlayed]];
         self.slider.value = self.player.amountPlayed;
     }
 }
+
 - (IBAction)playedButtonTouched:(UIButton *)sender {
     
     if (self.player.currentState == ORGMEngineStatePaused) {
@@ -72,7 +83,6 @@
         [self.player pause];
     }else{
         [self.player playUrl:self.url];
-        self.toPlayLabel.text = [NSString stringWithFormat:@"%.1f", self.player.trackTime];
     }
     
 }
@@ -83,42 +93,37 @@
 
 - (void)engine:(ORGMEngine *)engine didChangeState:(ORGMEngineState)state {
     switch (state) {
-        case ORGMEngineStateStopped: {
-            self.slider.value = 0.0;
-            self.playedLabel.text = @"Waiting...";
-            [self.playButton setEnabled:YES];
-//            [btnPause setTitle:NSLocalizedString(@"Pause", nil)
-//                      forState:UIControlStateNormal];
-            break;
-        }
         case ORGMEngineStatePaused: {
-            [self.playButton setTitle:NSLocalizedString(@"Play", nil)
+            [self.playButton setTitle:@"Play"
                       forState:UIControlStateNormal];
             break;
         }
         case ORGMEngineStatePlaying: {
-            [self.playButton setTitle:NSLocalizedString(@"Pause", nil) forState:UIControlStateNormal];
-            NSString* metadata = @"";
-            NSDictionary* metadataDict = [_player metadata];
-            for (NSString* key in metadataDict.allKeys) {
-                if (![key isEqualToString:@"picture"]) {
-                    metadata = [metadata stringByAppendingFormat:@"%@: %@\n", key,
-                                [metadataDict objectForKey:key]];
-                }
-            }
-//            tvMetadata.text = metadata;
-//            NSData* data = [metadataDict objectForKey:@"picture"];
-//            ivCover.image = data ? [UIImage imageWithData:data] : nil;
-//            [btnPause setTitle:NSLocalizedString(@"Pause", nil)
-//                      forState:UIControlStateNormal];
-//            [btnPlay setEnabled:NO];
+            [self.playButton setTitle:@"Pause" forState:UIControlStateNormal];
             self.slider.maximumValue = _player.trackTime;
+            self.toPlayLabel.text = [NSString stringWithFormat:@"%@", [self printSecond:self.player.trackTime]];
             break;
         }
-//        case ORGMEngineStateError:
-//            tvMetadata.text = [_player.currentError localizedDescription];
-//            break;
     }
+}
+
+- (NSString *) printSecond:(NSInteger) seconds {
+    
+    if (seconds < 60) {
+        return [NSString stringWithFormat:@"00:%02d", (int)seconds];
+    }
+    
+    if (seconds >= 60) {
+        
+        int minutes = floor(seconds/60);
+        int rseconds = trunc(seconds - minutes * 60);
+        
+        return [NSString stringWithFormat:@"%02d:%02d",minutes,rseconds];
+        
+    }
+    
+    return @"";
+    
 }
 
 
