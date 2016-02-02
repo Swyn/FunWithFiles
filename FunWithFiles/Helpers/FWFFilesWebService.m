@@ -72,6 +72,61 @@
     
 }
 
+-(void)addImageAtPath:(NSString *)path withName:(NSString *)name andImage:(UIImage *)image{
+    
+    
+    NSString *urlString;
+    
+    if (!path) {
+        urlString = [NSString stringWithFormat:@"http://ioschallenge.api.meetlima.com/%@", name];
+    }else{
+        urlString = [NSString stringWithFormat:@"http://ioschallenge.api.meetlima.com%@/%@?stat",path, name];
+    }
+    
+    urlString = [urlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    request.HTTPMethod = @"PUT";
+    
+    NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
+    NSURLSessionUploadTask *task = [session uploadTaskWithRequest:request fromData:imageData completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+    }];
+    [task resume];
+
+    
+}
+
+-(void)addFolderAtPath:(NSString *)path withName:(NSString *)name {
+    
+    NSString *urlString;
+    
+    if (!path) {
+        urlString = [NSString stringWithFormat:@"http://ioschallenge.api.meetlima.com/%@", name];
+    }else{
+        urlString = [NSString stringWithFormat:@"http://ioschallenge.api.meetlima.com%@/%@?stat", path, name];
+    }
+    
+    urlString = [urlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    request.HTTPMethod = @"PUT";
+    
+    NSURLSessionDataTask *dataSession = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+    }];
+    
+    [dataSession resume];
+
+    
+}
+
 
 
 

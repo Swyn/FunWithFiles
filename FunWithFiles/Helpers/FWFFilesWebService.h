@@ -14,6 +14,9 @@
 -(void)fetchAllFilesAtPath:(NSString *)path withCallBack:(void (^)(NSArray *files))callback;
 -(void)fetchMetadaForFile:(NSString *)fileName atPath:(NSString *)path withCallback:(void(^)(NSDictionary *dictionary))callback;
 
+-(void)addFolderAtPath:(NSString *)path withName:(NSString *)name;
+-(void)addImageAtPath:(NSString *)path withName:(NSString *)name andImage:(UIImage *)image;
+
 @end
 
 

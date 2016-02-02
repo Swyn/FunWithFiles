@@ -49,19 +49,15 @@
     
     FWFFilesWebService *webService = [[FWFFilesWebService alloc] init];
     FWFFileImporter *importer = [[FWFFileImporter alloc] initWithContext:[self managedObjectContext] webservice:webService];
+    
+    importer.currentPath = self.file.path;
+    [importer importAtPath:self.file.fileName withFile:self.file];
+    
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"File"];
     request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"fileName" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"mimetype" ascending:NO]];
-    NSPredicate *pred;
     
-    if (!self.isSubFolder) {
-        [importer importAtPath:nil withFile:nil];
-        pred = [NSPredicate predicateWithFormat:@"parentFile == nil"];
-    }else {
-        importer.currentPath = self.file.path;
-        [importer importAtPath:self.file.fileName withFile:self.file];
-        pred = [NSPredicate predicateWithFormat:@"parentFile == %@", self.file];
-    }
-    
+
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"parentFile == %@", self.file];
     [request setPredicate:pred];
     
     self.dataSource = [[FWFFetchedResultsControllerDataSource alloc] initWithTableView:self.tableView];
@@ -85,12 +81,9 @@
     
     [self.tableView addSubview:self.refreshController];
     
-    [self.refreshController addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
+    [self.refreshController addTarget:self action:@selector(setupView) forControlEvents:UIControlEventValueChanged];
 }
 
--(void)refreshTable{
-    [self setupView];
-}
 
 - (IBAction)addBarButtonItemTouched:(UIBarButtonItem *)sender {
     
@@ -149,12 +142,12 @@
     
     self.imageToUpload = info[UIImagePickerControllerEditedImage];
     [picker dismissViewControllerAnimated:YES completion:^{
-        [self addImage];
+        [self addImageAction];
     }];
     
 }
 
--(void)addImage{
+-(void)addImageAction{
     
     UIAlertController *alertController = [UIAlertController
                                           alertControllerWithTitle:@"Ajouter une Image"
@@ -173,7 +166,8 @@
                                handler:^(UIAlertAction *action)
                                {
                                    [[self managedObjectContext] performBlockAndWait:^{
-                                       [self addImageWithName:alertController.textFields.firstObject.text];
+                                       FWFFilesWebService *webService = [[FWFFilesWebService alloc] init];
+                                       [webService addImageAtPath:self.file.path withName:alertController.textFields.firstObject.text andImage:self.imageToUpload];
                                        NSError *error;
                                        [[self managedObjectContext] save:&error];
                                        if (!error) {
@@ -197,32 +191,6 @@
     
 }
 
--(void)addImageWithName:(NSString *)name{
-    
-    NSString *urlString;
-    
-    if (!self.isSubFolder) {
-        urlString = [NSString stringWithFormat:@"http://ioschallenge.api.meetlima.com/%@", name];
-    }else{
-        urlString = [NSString stringWithFormat:@"http://ioschallenge.api.meetlima.com%@/%@?stat", self.file.path, name];
-    }
-    
-    urlString = [urlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
-    NSURL *url = [NSURL URLWithString:urlString];
-    
-    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
-    
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-    request.HTTPMethod = @"PUT";
-    
-    NSData *imageData = UIImageJPEGRepresentation(self.imageToUpload, 1.0);
-    NSURLSessionUploadTask *task = [session uploadTaskWithRequest:request fromData:imageData completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-    }];
-    [task resume];
-    
-}
-
 
 -(void)addFolderAction{
     
@@ -243,7 +211,8 @@
                                handler:^(UIAlertAction *action)
                                {
                                    [[self managedObjectContext] performBlockAndWait:^{
-                                       [self addFolderWithName:alertController.textFields.firstObject.text];
+                                       FWFFilesWebService *webService = [[FWFFilesWebService alloc] init];
+                                       [webService addFolderAtPath:self.file.path withName:alertController.textFields.firstObject.text];
                                        NSError *error;
                                        [[self managedObjectContext] save:&error];
                                        if (!error) {
@@ -267,30 +236,6 @@
 }
 
 
--(void)addFolderWithName:(NSString *)name {
-    
-    NSString *urlString;
-    
-    if (!self.isSubFolder) {
-        urlString = [NSString stringWithFormat:@"http://ioschallenge.api.meetlima.com/%@", name];
-    }else{
-        urlString = [NSString stringWithFormat:@"http://ioschallenge.api.meetlima.com%@/%@?stat", self.file.path, name];
-    }
-    
-    urlString = [urlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
-    NSURL *url = [NSURL URLWithString:urlString];
-    
-    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
-    
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-    request.HTTPMethod = @"PUT";
-    
-    NSURLSessionDataTask *dataSession = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-    }];
-    
-    [dataSession resume];
-}
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -336,11 +281,6 @@
 }
 
 
-- (void)deleteObject:(id)object
-{
-    
-}
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -352,11 +292,5 @@
     
 }
 
-
-//- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-//{
-//    FWFImageViewController *detailViewController = segue.destinationViewController;
-//    detailViewController.file = self.dataSource.selectedItem;
-//}
 
 @end
