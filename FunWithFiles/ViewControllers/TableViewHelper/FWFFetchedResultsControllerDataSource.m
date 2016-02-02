@@ -17,6 +17,7 @@
 
 @implementation FWFFetchedResultsControllerDataSource
 
+
 - (id)initWithTableView:(UITableView*)tableView
 {
     self = [super init];
@@ -29,13 +30,16 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    
+    /*
+     We ask the fetchResultController to return it's array of sections and we return their count.
+    */
     return self.fetchedResultsController.sections.count;
 }
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)sectionIndex
 {
     
+    //We ask the array of sections and also the object within the array
     id<NSFetchedResultsSectionInfo> section = self.fetchedResultsController.sections[sectionIndex];
     return [section numberOfObjects];
 }
@@ -43,6 +47,7 @@
 
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
+    //configuration of table view cell with a delegate
     id object = [self objectAtIndexPath:indexPath];
     id cell = [tableView dequeueReusableCellWithIdentifier:self.reuseIdentifier forIndexPath:indexPath];
     [self.delegate configureCell:cell withObject:object];
@@ -54,16 +59,6 @@
     return [self.fetchedResultsController objectAtIndexPath:indexPath];
 }
 
-- (BOOL)tableView:(UITableView*)tableView canEditRowAtIndexPath:(NSIndexPath*)indexPath
-{
-    return YES;
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        [self.delegate deleteObject:[self.fetchedResultsController objectAtIndexPath:indexPath]];
-    }
-}
 
 #pragma mark NSFetchedResultsControllerDelegate
 
@@ -79,6 +74,9 @@
 
 - (void)controller:(NSFetchedResultsController*)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath*)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath*)newIndexPath
 {
+    
+    //check for NSFetchResult updates
+    
     if (type == NSFetchedResultsChangeInsert) {
         [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     } else if (type == NSFetchedResultsChangeMove) {
@@ -96,7 +94,8 @@
 
 - (void)setFetchedResultsController:(NSFetchedResultsController*)fetchedResultsController
 {
-    NSAssert(_fetchedResultsController == nil, @"TODO: you can currently only assign this property once");
+    //NSFecthResultController setter
+    
     _fetchedResultsController = fetchedResultsController;
     fetchedResultsController.delegate = self;
     [fetchedResultsController performFetch:NULL];
@@ -105,23 +104,11 @@
 
 - (id)selectedItem
 {
+    //return selected Item
     NSIndexPath* path = self.tableView.indexPathForSelectedRow;
     return path ? [self.fetchedResultsController objectAtIndexPath:path] : nil;
 }
 
 
-
-
-- (void)setPaused:(BOOL)paused
-{
-    _paused = paused;
-    if (paused) {
-        self.fetchedResultsController.delegate = nil;
-    } else {
-        self.fetchedResultsController.delegate = self;
-        [self.fetchedResultsController performFetch:NULL];
-        [self.tableView reloadData];
-    }
-}
 
 @end

@@ -31,6 +31,8 @@
 
 -(void)importAtPath:(NSString *)path withFile:(FWFFile *)file{
 {
+    //First we ask for all files then we go grab metadatas for each of them
+    
     __weak FWFFile *weakFile = file;
     [self.webservice fetchAllFilesAtPath:path withCallBack:^(NSArray *files)
      {

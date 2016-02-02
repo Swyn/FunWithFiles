@@ -13,6 +13,5 @@
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong) FWFFile *file;
-@property (nonatomic) BOOL isSubFolder;
 
 @end

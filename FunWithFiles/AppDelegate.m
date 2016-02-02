@@ -25,13 +25,8 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    //Setup of the persistentStack
     self.persistentStack = [[FWFPersistentStack alloc] initWithStoreURL:self.storeURL modelURL:self.modelURL];
-    
-//    self.webservice = [[FWFFilesWebService alloc] init];
-//    self.importer = [[FWFFileImporter alloc] initWithContext:self.persistentStack.backgroundManagedObjectContext webservice:self.webservice];
-//    [self.importer importAtPath:nil withFile:nil];
-    // Override point for customization after application launch.
     UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
     FWFFilesViewController *listViewController = (FWFFilesViewController *) navigationController.topViewController;
     listViewController.managedObjectContext = self.persistentStack.managedObjectContext;
@@ -96,14 +91,12 @@
     NSError *error = nil;
     NSString *failureReason = @"There was an error creating or loading the application's saved data.";
     if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
-        // Report any error we got.
+        // Report error
         NSMutableDictionary *dict = [NSMutableDictionary dictionary];
         dict[NSLocalizedDescriptionKey] = @"Failed to initialize the application's saved data";
         dict[NSLocalizedFailureReasonErrorKey] = failureReason;
         dict[NSUnderlyingErrorKey] = error;
-        error = [NSError errorWithDomain:@"YOUR_ERROR_DOMAIN" code:9999 userInfo:dict];
-        // Replace this with code to handle the error appropriately.
-        // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+        error = [NSError errorWithDomain:@"" code:9999 userInfo:dict];
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
@@ -113,7 +106,8 @@
 
 
 - (NSManagedObjectContext *)managedObjectContext {
-    // Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.)
+    
+    // Returns the managed object context for the application 
     if (_managedObjectContext != nil) {
         return _managedObjectContext;
     }
@@ -134,8 +128,6 @@
     if (managedObjectContext != nil) {
         NSError *error = nil;
         if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
-            // Replace this implementation with code to handle the error appropriately.
-            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             abort();
         }

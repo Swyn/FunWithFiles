@@ -25,30 +25,74 @@
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Dq2-sR-tki">
                                             <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                                            <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                                <rect key="frame" x="8" y="4" width="51" height="51"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="51" id="hAm-S4-Shj"/>
+                                                <constraint firstAttribute="height" constant="51" id="vCV-xf-kO9"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="hAm-S4-Shj"/>
+                                                    <exclude reference="vCV-xf-kO9"/>
+                                                </mask>
+                                            </variation>
+                                            <variation key="heightClass=regular-widthClass=compact">
+                                                <mask key="constraints">
+                                                    <include reference="hAm-S4-Shj"/>
+                                                    <include reference="vCV-xf-kO9"/>
+                                                </mask>
                                             </variation>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="omP-mJ-8SI">
                                             <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="43.5" id="aDw-fP-mOf"/>
+                                            </constraints>
                                             <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="20"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
-                                            <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                                <rect key="frame" x="67" y="8" width="325" height="43.5"/>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="aDw-fP-mOf"/>
+                                                </mask>
+                                            </variation>
+                                            <variation key="heightClass=regular-widthClass=compact">
+                                                <mask key="constraints">
+                                                    <include reference="aDw-fP-mOf"/>
+                                                </mask>
                                             </variation>
                                         </label>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstItem="omP-mJ-8SI" firstAttribute="centerY" secondItem="d9B-sk-p3v" secondAttribute="centerY" id="8E3-Sn-HDP"/>
+                                        <constraint firstItem="Dq2-sR-tki" firstAttribute="leading" secondItem="d9B-sk-p3v" secondAttribute="leadingMargin" id="HiR-2j-uaq"/>
+                                        <constraint firstItem="Dq2-sR-tki" firstAttribute="centerY" secondItem="d9B-sk-p3v" secondAttribute="centerY" id="TNo-cA-YUV"/>
+                                        <constraint firstItem="omP-mJ-8SI" firstAttribute="leading" secondItem="Dq2-sR-tki" secondAttribute="trailing" constant="8" id="asJ-Ub-HxS"/>
+                                        <constraint firstItem="omP-mJ-8SI" firstAttribute="trailing" secondItem="d9B-sk-p3v" secondAttribute="trailingMargin" id="ipS-DJ-DOD"/>
+                                    </constraints>
                                     <variation key="default">
                                         <mask key="subviews">
                                             <exclude reference="Dq2-sR-tki"/>
                                             <exclude reference="omP-mJ-8SI"/>
+                                        </mask>
+                                        <mask key="constraints">
+                                            <exclude reference="HiR-2j-uaq"/>
+                                            <exclude reference="TNo-cA-YUV"/>
+                                            <exclude reference="8E3-Sn-HDP"/>
+                                            <exclude reference="asJ-Ub-HxS"/>
+                                            <exclude reference="ipS-DJ-DOD"/>
                                         </mask>
                                     </variation>
                                     <variation key="heightClass=regular-widthClass=compact">
                                         <mask key="subviews">
                                             <include reference="Dq2-sR-tki"/>
                                             <include reference="omP-mJ-8SI"/>
+                                        </mask>
+                                        <mask key="constraints">
+                                            <include reference="HiR-2j-uaq"/>
+                                            <include reference="TNo-cA-YUV"/>
+                                            <include reference="8E3-Sn-HDP"/>
+                                            <include reference="asJ-Ub-HxS"/>
+                                            <include reference="ipS-DJ-DOD"/>
                                         </mask>
                                     </variation>
                                 </tableViewCellContentView>
@@ -335,9 +379,6 @@
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cMe-Jy-bq5">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                                <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                                    <rect key="frame" x="20" y="64" width="360" height="736"/>
-                                </variation>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

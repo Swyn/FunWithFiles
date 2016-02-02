@@ -10,6 +10,7 @@
 
 @interface FWFFilesTableViewCell : UITableViewCell
 
+//set my custom cell properties
 @property (weak, nonatomic) IBOutlet UIImageView *image;
 @property (weak, nonatomic) IBOutlet UILabel *fileName;
 

@@ -20,6 +20,8 @@
 -(void)fetchAllFilesAtPath:(NSString *)path withCallBack:(void (^)(NSArray *files))callback{
     NSString *urlString;
     
+    //Here we call all files inside a path
+    
     if (path == nil) {
         urlString = [NSString stringWithFormat:@"http://ioschallenge.api.meetlima.com/"];
     }else{
@@ -46,6 +48,9 @@
 
 
 -(void)fetchMetadaForFile:(NSString *)fileName atPath:(NSString *)path withCallback:(void(^)(NSDictionary *dictionary))callback{
+    
+    //Here we fetch metadatas for each file
+    
     NSString *urlString;
     
     if (path == nil) {
@@ -74,7 +79,7 @@
 
 -(void)addImageAtPath:(NSString *)path withName:(NSString *)name andImage:(UIImage *)image{
     
-    
+    //Method to upload image
     NSString *urlString;
     
     if (!path) {
@@ -101,6 +106,8 @@
 }
 
 -(void)addFolderAtPath:(NSString *)path withName:(NSString *)name {
+    
+    //method to add a folder
     
     NSString *urlString;
     

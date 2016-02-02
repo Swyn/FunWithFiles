@@ -12,6 +12,7 @@
 
 - (void)loadFromDictionary:(NSDictionary *)dictionary withParentFile:(FWFFile *)file
 {
+    //Object update
     self.fileName = dictionary[@"file"];
     self.mimetype = dictionary[@"mimetype"];
     self.changeTime = [NSString stringWithFormat:@"%@", dictionary[@"change_time"]] ;
@@ -19,11 +20,13 @@
     self.modificationTime = [NSString stringWithFormat:@"%@", dictionary[@"modification_time"]];
     self.path = dictionary[@"path"];
     self.parentFile = file;
-    //    self.size = dictionary[@"size"];
 }
+
 
 + (FWFFile *)findOrCreateFileWithIdentifier:(NSString *)name inContext:(NSManagedObjectContext *)context
 {
+    //add object to context
+    
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"File"];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"fileName == %@",name];
     NSError *error = nil;
